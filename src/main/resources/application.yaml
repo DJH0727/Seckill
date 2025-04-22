@@ -1,0 +1,64 @@
+server:
+  port: 8080
+
+#访问RabbitMQ管理界面 http://8.148.107.138:15672/
+app:
+  mysql_host: 8.148.107.138
+  redis_host: 8.148.107.138  # Redis 服务地址
+  rabbitmq_host: 8.148.107.138  # RabbitMQ 服务地址
+
+spring:
+  application:
+    name: seckill  # Spring Boot 应用名称
+  datasource:
+    url: jdbc:mysql://${app.mysql_host}:3306/seckill?useSSL=false&serverTimezone=UTC
+    username: user  # 数据库用户名
+    password: 123456  # 数据库密码
+    driver-class-name: com.mysql.cj.jdbc.Driver  # MySQL 驱动类名，Spring Boot 会自动配置这个
+
+  data:
+    redis:
+      host: ${app.redis_host}
+      port: 6379
+      password:        # 如果设置了密码，这里填写
+      timeout: 3000    # 连接超时（毫秒）
+
+  rabbitmq:
+    host: ${app.rabbitmq_host}
+    port: 5672
+    username: user
+    password: 123456
+    virtual-host: /  # RabbitMQ 虚拟主机
+    listener:
+      simple:
+        #消费者最小数量
+        concurrency: 10
+        #消费者最大数量
+        max-concurrency: 10
+        #限制消费者每次只能处理一条消息，处理完在继续下一条消息
+        prefetch: 1
+        #启动是默认启动容器
+        auto-startup: true
+        #被拒绝时重新进入队列
+        default-requeue-rejected: true
+    template:
+      retry:
+        #发布重试，默认false
+        enabled: true
+        #重试时间，默认1000ms
+        initial-interval: 1000ms
+        #重试最大次数，默认3次
+        max-attempts: 3
+        #最大重试间隔时间
+        max-interval: 10000ms
+        #重试的间隔乘数，比如配2。0  第一等10s 第二次等20s 第三次等40s
+        multiplier: 1
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml  # MyBatis 的 Mapper XML 文件的位置，classpath 指的是资源目录，mapper/*.xml 表示在 resources/mapper 目录下的所有 XML 文件
+  type-aliases-package: com.xmu.seckill.entity  # MyBatis 实体类的路径，告诉 MyBatis 在哪里寻找与数据库表对应的 Java 实体类
+
+#swagger配置
+springdoc:
+  swagger-ui:
+    path: /api   # 自定义访问路径
