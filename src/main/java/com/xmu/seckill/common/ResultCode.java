@@ -14,7 +14,8 @@ public enum ResultCode {
     //自定义错误码
     USER_NOT_EXIST(1001, "用户不存在"),
     PASSWORD_ERROR(1002, "用户名或密码错误"),
-    USER_NAME_EXIST(1003, "用户已存在");
+    USER_NAME_EXIST(1003, "用户已存在"),
+    TOO_MANY_REQUESTS(1004, "失败次数过多，请10分钟后再试");
     
  
     

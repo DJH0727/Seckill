@@ -10,9 +10,7 @@
 
 在logback.xml更改日志输出级别。
 
-访问 http://localhost:8080/swagger-ui/index.html#/
-
-或 http://localhost:8080/api #自定义，在application.yml中配置。
+访问 http://localhost:8080/swagger-ui/index.html#/ 调试接口。
 
 
 

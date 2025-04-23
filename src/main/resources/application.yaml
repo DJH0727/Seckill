@@ -72,8 +72,3 @@ spring:
 mybatis:
   mapper-locations: classpath:mapper/*.xml  # MyBatis 的 Mapper XML 文件的位置，classpath 指的是资源目录，mapper/*.xml 表示在 resources/mapper 目录下的所有 XML 文件
   type-aliases-package: com.xmu.seckill.entity  # MyBatis 实体类的路径，告诉 MyBatis 在哪里寻找与数据库表对应的 Java 实体类
-
-#swagger配置
-springdoc:
-  swagger-ui:
-    path: /api   # 自定义访问路径

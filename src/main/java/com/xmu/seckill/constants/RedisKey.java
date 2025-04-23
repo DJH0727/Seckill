@@ -7,4 +7,6 @@ public class RedisKey {
     public static final String RESULT_KEY_PREFIX = "seckill:result:";// 记录用户已经抢过的商品，防止用户重复抢购
     //将库存的变化记录在redis中，形如 seckill:stock:dirty    <1,2>(set) 表示商品1和商品2的库存发生了变化
     public static final String STOCK_DIRTY_SET = "seckill:stock:dirty";
+
+    public static final String LOGIN_FAIL_PREFIX = "login:fail:";
 }
