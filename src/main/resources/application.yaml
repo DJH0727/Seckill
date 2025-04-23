@@ -9,10 +9,10 @@ server:
 #访问RabbitMQ管理界面 http://47.122.159.177:15672/
 #服务器password: Linux@123456
 app:
-  host: 47.122.159.177
-  mysql_host: 47.122.159.177 # MySQL 服务地址
-  redis_host: 47.122.159.177  # Redis 服务地址
-  rabbitmq_host: 47.122.159.177  # RabbitMQ 服务地址
+  host:
+    mysql_host: 47.122.159.177 # MySQL 服务地址
+    redis_host: 47.122.159.177  # Redis 服务地址
+    rabbitmq_host: 47.122.159.177  # RabbitMQ 服务地址
 
 
 
@@ -20,7 +20,7 @@ spring:
   application:
     name: seckill  # Spring Boot 应用名称
   datasource:
-    url: jdbc:mysql://${app.mysql_host}:3306/seckill?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://${app.host.mysql_host}:3306/seckill?useSSL=false&serverTimezone=UTC
     username: user  # 数据库用户名
     password: 123456  # 数据库密码
     driver-class-name: com.mysql.cj.jdbc.Driver  # MySQL 驱动类名，Spring Boot 会自动配置这个
@@ -33,13 +33,13 @@ spring:
 
   data:
     redis:
-      host: ${app.redis_host}
+      host: ${app.host.redis_host}
       port: 6379
       password:        # 如果设置了密码，这里填写
       timeout: 3000    # 连接超时（毫秒）
 
   rabbitmq:
-    host: ${app.rabbitmq_host}
+    host: ${app.host.rabbitmq_host}
     port: 5672
     username: user
     password: 123456

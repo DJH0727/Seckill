@@ -4,19 +4,13 @@ import com.xmu.seckill.config.RabbitMQConfig;
 import com.xmu.seckill.dto.CreateOrderRequest;
 import com.xmu.seckill.dto.SeckillMessage;
 import com.xmu.seckill.entity.Order;
-import com.xmu.seckill.mapper.OrderMapper;
-import com.xmu.seckill.mapper.ProductMapper;
-import com.xmu.seckill.util.Dto2Entity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
-import java.time.LocalDateTime;
-import java.util.Map;
-
-import static com.xmu.seckill.constants.RedisKey.STOCK_DIRTY_SET;
+import  com.xmu.seckill.constants.RedisKey;
 
 @Service
 public class MessageConsumer {
@@ -50,7 +44,7 @@ public class MessageConsumer {
 
         Order order = orderService.createOrder(orderRequest);
         //标记 productId 对应的库存已被修改
-        redisTemplate.opsForSet().add(STOCK_DIRTY_SET, productId.toString());
+        redisTemplate.opsForSet().add(RedisKey.STOCK_DIRTY_SET, productId.toString());
 
         logger.info("订单创建成功，订单信息：{}",  order.toString());
     }

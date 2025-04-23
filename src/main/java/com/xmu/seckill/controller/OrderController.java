@@ -13,9 +13,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * OrderController
- * @date 2025/4/21
+ * 2025/4/21
  */
 @Tag(name = "订单接口", description = "订单相关接口")
 @RestController
@@ -74,5 +76,12 @@ public class OrderController {
         } catch (RuntimeException e) {
             return Result.failed(e.getMessage());
         }
+    }
+
+    @Operation(summary = "获取所有订单", description = "获取所有订单")
+    @GetMapping("/list")
+    public Result<List<Order>> getAllOrders() {
+        List<Order> orders = orderService.getAllOrders();
+        return Result.success(orders);
     }
 }

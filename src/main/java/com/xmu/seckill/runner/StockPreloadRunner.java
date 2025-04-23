@@ -12,7 +12,7 @@ import com.xmu.seckill.entity.Product;
 
 import java.util.List;
 
-import static com.xmu.seckill.constants.RedisKey.STOCK_KEY_PREFIX;
+import  com.xmu.seckill.constants.RedisKey;
 
 /**
  * 项目启动时，把商品库存预热到 Redis
@@ -34,14 +34,14 @@ public class StockPreloadRunner implements ApplicationRunner {
 
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) {
         //从数据库中查询出所有商品
         List<Product> productList = productMapper.findAll(); // 查询所有商品
 
         //  遍历商品列表，将每个商品的库存信息写入 Redis
         for (Product product : productList) {
             // Redis 中的 key 形如：seckill:stock:1
-            String key = STOCK_KEY_PREFIX + product.getId();
+            String key = RedisKey.STOCK_KEY_PREFIX + product.getId();
             // 写入库存数量到 Redis（注意是字符串类型）
             redisTemplate.opsForValue().set(key, String.valueOf(product.getStock()));
             logger.info("商品 [{}] 的库存 [{}] 已成功写入 Redis！", product.getName(), product.getStock());

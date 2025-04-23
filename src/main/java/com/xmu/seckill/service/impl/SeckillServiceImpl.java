@@ -5,8 +5,7 @@ import com.xmu.seckill.common.Result;
 
 import com.xmu.seckill.service.MessageProducer;
 import com.xmu.seckill.service.SeckillService;
-import static com.xmu.seckill.constants.RedisKey.STOCK_KEY_PREFIX;
-import static com.xmu.seckill.constants.RedisKey.USER_KEY_PREFIX;
+import com.xmu.seckill.constants.RedisKey;
 
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
@@ -50,8 +49,8 @@ public class SeckillServiceImpl implements SeckillService {
 
     @Override
     public Result<String> doSeckill(Long productId, Long userId) {
-        String stockKey = STOCK_KEY_PREFIX + productId;
-        String userKey = USER_KEY_PREFIX + productId + ":" + userId;
+        String stockKey = RedisKey.STOCK_KEY_PREFIX + productId;
+        String userKey = RedisKey.RESULT_KEY_PREFIX + productId + ":" + userId;
         List<String> keys = Arrays.asList(stockKey, userKey);
         Long result = redisTemplate.execute(seckillScript, keys);
         if (result == null) {
