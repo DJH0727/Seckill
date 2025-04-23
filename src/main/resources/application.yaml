@@ -10,9 +10,9 @@ server:
 #服务器password: Linux@123456
 app:
   host: 47.122.159.177
-  mysql_host: ${app.host}  # MySQL 服务地址
-  redis_host: ${app.host}  # Redis 服务地址
-  rabbitmq_host: ${app.host}  # RabbitMQ 服务地址
+  mysql_host: 47.122.159.177 # MySQL 服务地址
+  redis_host: 47.122.159.177  # Redis 服务地址
+  rabbitmq_host: 47.122.159.177  # RabbitMQ 服务地址
 
 
 

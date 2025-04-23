@@ -1,20 +1,17 @@
 package com.xmu.seckill.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.xmu.seckill.common.Result;
-import com.xmu.seckill.dto.CreateOrderRequest;
-import com.xmu.seckill.dto.SeckillMessage;
-import com.xmu.seckill.entity.Order;
-import com.xmu.seckill.mapper.OrderMapper;
+
 import com.xmu.seckill.service.MessageProducer;
 import com.xmu.seckill.service.SeckillService;
-import com.xmu.seckill.util.Dto2Entity;
-import com.xmu.seckill.config.RabbitMQConfig;
+import static com.xmu.seckill.constants.RedisKey.STOCK_KEY_PREFIX;
+import static com.xmu.seckill.constants.RedisKey.USER_KEY_PREFIX;
+
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -22,16 +19,17 @@ import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 
 
-import java.time.LocalDateTime;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+
+
 @Service
 public class SeckillServiceImpl implements SeckillService {
     private static final Logger logger = LoggerFactory.getLogger(SeckillServiceImpl.class);
-    private static final String STOCK_KEY_PREFIX = "seckill:stock:";
-    private static final String USER_KEY_PREFIX = "seckill:user:";// 记录用户已经抢过的商品，防止用户重复抢购
+
     private final StringRedisTemplate redisTemplate;
     private final MessageProducer messageProducer;
 

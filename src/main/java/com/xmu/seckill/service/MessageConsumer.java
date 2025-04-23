@@ -11,9 +11,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Map;
+
+import static com.xmu.seckill.constants.RedisKey.STOCK_DIRTY_SET;
 
 @Service
 public class MessageConsumer {
@@ -21,11 +24,12 @@ public class MessageConsumer {
 
 
     private final OrderService orderService;
-    private final ProductService productService;
+    private final StringRedisTemplate redisTemplate;
+
     @Autowired
-    public MessageConsumer(OrderService orderService, ProductService productService) {
+    public MessageConsumer(OrderService orderService, StringRedisTemplate redisTemplate) {
         this.orderService = orderService;
-        this.productService = productService;
+        this.redisTemplate = redisTemplate;
     }
 
     // 消息队列监听器，接收到订单创建消息后处理订单
@@ -44,8 +48,10 @@ public class MessageConsumer {
         //int stock = productService.getStock(productId);
         //productService.updateStock(productId, stock - 1);
 
-        //Order order = orderService.createOrder(orderRequest);
+        Order order = orderService.createOrder(orderRequest);
+        //标记 productId 对应的库存已被修改
+        redisTemplate.opsForSet().add(STOCK_DIRTY_SET, productId.toString());
 
-        logger.info("订单创建成功，订单信息：{}",  "暂未实现");
+        logger.info("订单创建成功，订单信息：{}",  order.toString());
     }
 }

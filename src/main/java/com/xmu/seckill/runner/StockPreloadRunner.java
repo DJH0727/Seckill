@@ -1,6 +1,5 @@
 package com.xmu.seckill.runner;
 
-import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,8 @@ import com.xmu.seckill.mapper.ProductMapper;
 import com.xmu.seckill.entity.Product;
 
 import java.util.List;
+
+import static com.xmu.seckill.constants.RedisKey.STOCK_KEY_PREFIX;
 
 /**
  * 项目启动时，把商品库存预热到 Redis
@@ -30,7 +31,6 @@ public class StockPreloadRunner implements ApplicationRunner {
         this.redisTemplate = redisTemplate;
     }
 
-    private static final String STOCK_KEY_PREFIX = "seckill:stock:";// Redis 中库存 key 的前缀
 
 
     @Override
