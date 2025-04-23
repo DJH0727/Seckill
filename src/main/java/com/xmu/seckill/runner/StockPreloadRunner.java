@@ -44,10 +44,10 @@ public class StockPreloadRunner implements ApplicationRunner {
             String key = STOCK_KEY_PREFIX + product.getId();
             // 写入库存数量到 Redis（注意是字符串类型）
             redisTemplate.opsForValue().set(key, String.valueOf(product.getStock()));
-            logger.info("✅ 商品 [{}] 的库存 [{}] 已成功写入 Redis！", product.getName(), product.getStock());
+            logger.info("商品 [{}] 的库存 [{}] 已成功写入 Redis！", product.getName(), product.getStock());
         }
 
-        logger.info("✅ Redis 库存预热完成！");
+        logger.info("Redis 库存预热完成！");
 
     }
 }

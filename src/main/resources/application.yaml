@@ -1,11 +1,20 @@
 server:
   port: 8080
+  tomcat:
+    threads:
+      max: 1000           # 最大处理请求线程数
+    max-connections: 10000  # 最大连接数
+    accept-count: 1000      # 当线程都忙时，还能排队的连接数
 
-#访问RabbitMQ管理界面 http://8.148.107.138:15672/
+#访问RabbitMQ管理界面 http://47.122.159.177:15672/
+#服务器password: Linux@123456
 app:
-  mysql_host: 8.148.107.138
-  redis_host: 8.148.107.138  # Redis 服务地址
-  rabbitmq_host: 8.148.107.138  # RabbitMQ 服务地址
+  host: 47.122.159.177
+  mysql_host: ${app.host}  # MySQL 服务地址
+  redis_host: ${app.host}  # Redis 服务地址
+  rabbitmq_host: ${app.host}  # RabbitMQ 服务地址
+
+
 
 spring:
   application:
@@ -15,6 +24,12 @@ spring:
     username: user  # 数据库用户名
     password: 123456  # 数据库密码
     driver-class-name: com.mysql.cj.jdbc.Driver  # MySQL 驱动类名，Spring Boot 会自动配置这个
+    hikari:
+      maximum-pool-size: 100     # 数据库最大连接数
+      minimum-idle: 20           # 最小空闲连接数
+      connection-timeout: 30000  # 获取连接超时(ms)
+      idle-timeout: 600000
+      max-lifetime: 1800000
 
   data:
     redis:

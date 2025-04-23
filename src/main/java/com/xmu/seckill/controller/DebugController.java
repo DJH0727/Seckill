@@ -32,7 +32,7 @@ public class DebugController {
         var keys = redisTemplate.keys(SECKILL_KEY_PREFIX + "*");
         if (keys != null && !keys.isEmpty()) {
             redisTemplate.delete(keys);
-            logger.info("✅ 清除SecKill相关数据成功，共清除 {} 条记录", keys.size());
+            logger.info("清除SecKill相关数据成功，共清除 {} 条记录", keys.size());
             return Result.success(" 清除SecKill相关数据成功，共清除 " + keys.size() + " 条记录");
 
         }

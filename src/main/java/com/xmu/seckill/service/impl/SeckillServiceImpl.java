@@ -47,7 +47,7 @@ public class SeckillServiceImpl implements SeckillService {
         seckillScript = new DefaultRedisScript<>();
         seckillScript.setLocation(new ClassPathResource("lua/seckill.lua"));
         seckillScript.setResultType(Long.class);
-        logger.info("✅ init lua script success");
+        logger.info("init lua script success");
     }
 
     @Override
@@ -57,18 +57,18 @@ public class SeckillServiceImpl implements SeckillService {
         List<String> keys = Arrays.asList(stockKey, userKey);
         Long result = redisTemplate.execute(seckillScript, keys);
         if (result == null) {
-            logger.error("❌ Lua 脚本执行失败");
+            logger.error("Lua 脚本执行失败");
             return Result.failed("秒杀异常，请稍后重试");
         }
         if (result == 0L) {
-            logger.info("❗ 用户 {} 重复秒杀商品 {}", userId, productId);
+            //logger.info("用户 {} 重复秒杀商品 {}", userId, productId);
             return Result.failed("不能重复秒杀");
         } else if (result == -1L) {
-            logger.info("❗库存不足，用户 {} 秒杀商品 {} 失败", userId, productId);
+            //logger.info("库存不足，用户 {} 秒杀商品 {} 失败", userId, productId);
             return Result.failed("库存不足");
         }
         else if (result == -2L) {
-            logger.info("❗Redis未缓存，用户 {} 秒杀商品 {} 失败", userId, productId);
+           // logger.info("Redis未缓存，用户 {} 秒杀商品 {} 失败", userId, productId);
             return Result.failed("秒杀失败：库存未初始化");
         }
 
@@ -76,15 +76,11 @@ public class SeckillServiceImpl implements SeckillService {
         redisTemplate.opsForValue().set(userKey, "1", 1, TimeUnit.DAYS);
 
         // 发送消息到队列，由异步消费者处理订单创建
-        SeckillMessage message = new SeckillMessage();
-        message.setProductId(productId);
-        message.setUserId(userId);
-
         //发送消息到队列
         messageProducer.sendOrderCreateMessage(userId, productId);
 
 
-        logger.info("✅ stock is success, userId: {} productId: {}",userId , productId );
+        logger.info("stock is success, userId: {} productId: {}",userId , productId );
 
         return Result.success("秒杀成功, 订单创建中");
     }

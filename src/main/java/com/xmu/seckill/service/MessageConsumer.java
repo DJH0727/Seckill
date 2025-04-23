@@ -43,8 +43,9 @@ public class MessageConsumer {
         //减库存,先查后改，在高并发场景下存在并发问题
         //int stock = productService.getStock(productId);
         //productService.updateStock(productId, stock - 1);
-        Order order = orderService.createOrder(orderRequest);
 
-        logger.info("订单创建成功，订单信息：{}",  order.toString());
+        //Order order = orderService.createOrder(orderRequest);
+
+        logger.info("订单创建成功，订单信息：{}",  "暂未实现");
     }
 }

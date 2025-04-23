@@ -28,10 +28,12 @@ public class SeckillController {
     @Operation(summary = "发起秒杀请求", description = "根据商品 ID 和用户 ID 发起秒杀")
     @PostMapping("/{productId}")
     public Result<String> seckill(@PathVariable Long productId, @RequestParam Long userId) {
+        /*
         User user = userService.findById(userId);
         if (user == null) {
             return Result.failed(ResultCode.USER_NOT_EXIST);
         }
+         */
 
         return seckillService.doSeckill(productId, userId);
     }
