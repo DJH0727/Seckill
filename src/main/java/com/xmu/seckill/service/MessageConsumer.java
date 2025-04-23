@@ -32,7 +32,7 @@ public class MessageConsumer {
         Long userId = message.getUserId();
         Long productId = message.getProductId();
 
-        // 模拟订单创建逻辑（真实应用中应处理事务和其他边界情况）
+        // 创建订单
         CreateOrderRequest orderRequest = new CreateOrderRequest();
         orderRequest.setUserId(userId);
         orderRequest.setGoodsId(productId);
@@ -43,7 +43,7 @@ public class MessageConsumer {
         //productService.updateStock(productId, stock - 1);
 
         Order order = orderService.createOrder(orderRequest);
-        //标记 productId 对应的库存已被修改
+        //标记 productId 对应的库存已被修改，用于同步库存到数据库
         redisTemplate.opsForSet().add(RedisKey.STOCK_DIRTY_SET, productId.toString());
 
         logger.info("订单创建成功，订单信息：{}",  order.toString());

@@ -73,7 +73,6 @@ public class SeckillServiceImpl implements SeckillService {
         redisTemplate.opsForValue().set(userKey, "1", 1, TimeUnit.DAYS);
 
         // 发送消息到队列，由异步消费者处理订单创建
-        //发送消息到队列
         messageProducer.sendOrderCreateMessage(userId, productId);
 
 
