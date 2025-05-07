@@ -17,10 +17,18 @@ app:
 
 
 spring:
+  thymeleaf:
+    cache: false  # 是否启用 Thymeleaf 缓存
+    mode: HTML  # 模板模式
+    encoding: UTF-8  # 编码
+    prefix: classpath:/templates/  # 模板文件前缀
+    suffix: .html  # 模板文件后缀
+    servlet:
+      content-type: text/html;charset=UTF-8  # 内容类型
   application:
     name: seckill  # Spring Boot 应用名称
   datasource:
-    url: jdbc:mysql://${app.host.mysql_host}:3306/seckill?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://${app.host.mysql_host}:3306/seckill?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
     username: user  # 数据库用户名
     password: 123456  # 数据库密码
     driver-class-name: com.mysql.cj.jdbc.Driver  # MySQL 驱动类名，Spring Boot 会自动配置这个
@@ -30,7 +38,6 @@ spring:
       connection-timeout: 30000  # 获取连接超时(ms)
       idle-timeout: 600000
       max-lifetime: 1800000
-
   data:
     redis:
       host: ${app.host.redis_host}
@@ -68,7 +75,11 @@ spring:
         max-interval: 10000ms
         #重试的间隔乘数，比如配2。0  第一等10s 第二次等20s 第三次等40s
         multiplier: 1
+  web:
+    resources:
+      static-locations: classpath:/static/
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml  # MyBatis 的 Mapper XML 文件的位置，classpath 指的是资源目录，mapper/*.xml 表示在 resources/mapper 目录下的所有 XML 文件
   type-aliases-package: com.xmu.seckill.entity  # MyBatis 实体类的路径，告诉 MyBatis 在哪里寻找与数据库表对应的 Java 实体类
+

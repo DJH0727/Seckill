@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>商品列表</title>
+    <style>
+        body {
+            font-family: "Segoe UI", sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+
+        .product-card:hover {
+            transform: scale(1.03);
+        }
+
+        .product-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #222;
+        }
+
+        .product-price, .product-stock {
+            font-size: 14px;
+            margin: 5px 0;
+        }
+
+        .error-message {
+            text-align: center;
+            color: red;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<h2>商品列表</h2>
+
+<div class="product-grid" id="product-list"></div>
+
+<p class="error-message" id="error-message"></p>
+
+<script>
+    const token = localStorage.getItem("token");
+    fetch("/product/list", {
+        method: "GET",
+        headers: {
+            //"Authorization": "Bearer " + localStorage.getItem("token") // 可选，如果后端验证 JWT
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.code === 200) {
+                const list = data.data;
+                const container = document.getElementById("product-list");
+
+                list.forEach(product => {
+                    const card = document.createElement("div");
+                    card.className = "product-card";
+                    card.innerHTML = `
+                        <div class="product-title">${product.name}</div>
+                        <div class="product-price">价格：￥${product.price}</div>
+                        <div class="product-stock">库存：${product.stock}</div>
+                    `;
+                    container.appendChild(card);
+                });
+            } else {
+                document.getElementById("error-message").textContent = data.message || "加载商品失败";
+            }
+        })
+        .catch(error => {
+            console.error("请求错误：", error);
+            document.getElementById("error-message").textContent = "请求失败，请稍后再试";
+        });
+</script>
+</body>
+</html>
