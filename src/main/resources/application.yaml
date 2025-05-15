@@ -42,7 +42,7 @@ spring:
     redis:
       host: ${app.host.redis_host}
       port: 6379
-      password:        # 如果设置了密码，这里填写
+      password: RedisPas123       # 如果设置了密码，这里填写
       timeout: 3000    # 连接超时（毫秒）
 
   rabbitmq:
