@@ -17,6 +17,12 @@ public class PageController {
         return "login";  // 显示 login.html 页面
     }
 
+    @Operation(summary = "显示注册页面", description = "显示注册页面")
+    @GetMapping("/register")
+    public String showRegisterPage() {
+        return "register";  // 指向 register.html
+    }
+
     @Operation(summary = "商品列表页面", description = "显示商品列表页面")
     @GetMapping("/products")
     public String showProductsPage() {

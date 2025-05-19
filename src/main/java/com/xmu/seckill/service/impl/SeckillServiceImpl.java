@@ -70,7 +70,7 @@ public class SeckillServiceImpl implements SeckillService {
         }
 
         // 库存减1，用户参与标记
-        redisTemplate.opsForValue().set(userKey, "1", 1, TimeUnit.DAYS);
+        //redisTemplate.opsForValue().set(userKey, "1", 1, TimeUnit.DAYS);
 
         // 发送消息到队列，由异步消费者处理订单创建
         messageProducer.sendOrderCreateMessage(userId, productId);
