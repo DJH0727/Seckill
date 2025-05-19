@@ -29,7 +29,7 @@ public class DebugController {
     }
 
     @PostMapping("/resetRedis")
-    @Operation(summary = "重置 Redis 数据", description = "删除redis中所有秒杀结果，并重置所有商品库存数量为10")
+    @Operation(summary = "重置 Redis 数据", description = "删除redis中所有秒杀结果，并重置所有商品库存数量为1000")
     public Result<String> resetRedis() {
         //
         var keys = redisTemplate.keys(RedisKey.RESULT_KEY_PREFIX + "*");
@@ -44,8 +44,8 @@ public class DebugController {
         var stockKeys = redisTemplate.keys(RedisKey.STOCK_KEY_PREFIX + "*");
         if (stockKeys != null && !stockKeys.isEmpty()) {
             for (var key : stockKeys) {
-                redisTemplate.opsForValue().set(key, "10");
-                productMapper.updateStock(Long.parseLong(key.split(":")[2]), 10);
+                redisTemplate.opsForValue().set(key, "1000");
+                productMapper.updateStock(Long.parseLong(key.split(":")[2]), 1000);
             }
             logger.info("重置库存数量成功，共重置 {} 条记录", stockKeys.size());
         }

@@ -4,7 +4,7 @@ server:
     threads:
       max: 1000           # 最大处理请求线程数
     max-connections: 10000  # 最大连接数
-    accept-count: 1000      # 当线程都忙时，还能排队的连接数
+    accept-count: 2000      # 当线程都忙时，还能排队的连接数
 
 #访问RabbitMQ管理界面 http://47.122.159.177:15672/
 #服务器password: Linux@123456
@@ -44,6 +44,12 @@ spring:
       port: 6379
       password: RedisPas123       # 如果设置了密码，这里填写
       timeout: 3000    # 连接超时（毫秒）
+      lettuce:
+        pool:
+          max-active: 1000
+          max-idle: 500
+          min-idle: 20
+          max-wait: 2000ms
 
   rabbitmq:
     host: ${app.host.rabbitmq_host}
@@ -54,9 +60,9 @@ spring:
     listener:
       simple:
         #消费者最小数量
-        concurrency: 10
+        concurrency: 20
         #消费者最大数量
-        max-concurrency: 10
+        max-concurrency: 50
         #限制消费者每次只能处理一条消息，处理完在继续下一条消息
         prefetch: 1
         #启动是默认启动容器
